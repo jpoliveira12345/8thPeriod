@@ -1,0 +1,38 @@
+body{
+  background-image: url("bg1.jpg");
+  background-size: 100%;
+  display: block;
+}
+
+.container {
+  border-radius: 15px;
+  background: white;
+  margin: auto;
+  width: 80%;
+  border: 1px solid #7f7f7f;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.titulo{
+  color: #b80031;
+  font-display: Verdana, Geneva, sans-serif;
+}
+
+.images{
+  width: 160px;
+  height: 110px;
+  border-radius: 15px;
+  margin: 15px;
+}
+
+.container-images{
+  display: flex;
+  flex-direction: column;
+
+}
+
+.images-row{
+  display: inline;
+  margin-bottom: 20px;
+}
