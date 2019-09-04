@@ -1,0 +1,53 @@
+body{
+    background-image: url("images/bg1.jpg");
+    background-size: 100%;
+    display: block;
+    padding: 0;
+}
+
+.container {
+  border-radius: 15px;
+  background: white;
+  padding: 20px;
+  margin: auto;
+  width: 80%;
+  border: 1px solid #bfbfbf;
+  height: 80vh;
+  padding: 50px;
+  box-sizing: border-box;
+}
+
+.menu{
+  width: 100%;
+  background: black;
+  color: white;
+  height: 60px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+}
+
+.menu-items{
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  padding: 0;
+}
+
+.item{
+  margin: 20px;
+  list-style-type: none;
+}
+
+.container h1{
+  color: #777777;
+}
+
+.imgs{
+  width: 200px;
+  height: 150px;
+  margin: 18px;
+  border-radius: 10px;
+}
