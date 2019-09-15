@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <title>Exercício 5</title>
+  </head>
+  <body>
+    <main>
+      <form name="formulario" action="" onsubmit="event.preventDefault()" method="POST">
+        a : <input type="number" name="A" id="A" required>
+        b : <input type="number" name="B" id="B" required>
+        c : <input type="number" name="C" id="C" required>
+        <input onclick="calculateDelta()" type="submit" value="Enviar" >
+      </form>
+      <h1 id="answer"></h1>
+    </main>
+    <script>
+      function calculateDelta(){
+        var a,b,c,d;
+        a = document.forms["formulario"]["A"].value;
+        b = document.forms["formulario"]["B"].value;
+        c = document.forms["formulario"]["C"].value;
+        d = Math.pow(b,2)-4*a*c;
+        document.getElementById("answer").innerHTML= d;
+      }
+    </script>
+  </body>
+</html>

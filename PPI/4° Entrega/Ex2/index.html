@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+      <meta charset="UTF-8">
+      <title>Exercício 2</title>
+  </head>
+  <body>
+    <main>
+      <img src="index.jpeg" alt="border collie" id="dog" onmouseover="zoom()" onmouseout="normal()">
+    </main>
+    <script>
+      function zoom(){
+        let dogImage = document.getElementById("dog"), width, height;
+        width = dogImage.naturalWidth;
+        height = dogImage.naturalHeight;
+        dogImage.setAttribute("width", width*2);
+        dogImage.setAttribute("height", height*2);
+      }
+      function normal(){
+        let dogImage = document.getElementById("dog"), width, height;
+        width = dogImage.naturalWidth;
+        height = dogImage.naturalHeight;
+        dogImage.setAttribute("width", width);
+        dogImage.setAttribute("height", height);
+      }
+    </script>
+  </body>
+  </html>
