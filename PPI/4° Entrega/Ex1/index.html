@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+      <meta charset="UTF-8">
+      <title>Exercício 1</title>
+  </head>
+  <body>
+    <main>
+      <h1 id="title" onClick="changeColor()" >Titulo</h1>
+      <p id="paragraph" onmouseover="boldOn()" onmouseout="boldOff()" onclick="thanks()">Paragrafo</p>
+    </main>
+    <script>
+      function changeColor(){
+        let title = document.getElementById("title");
+        if(title.style.color ==='blue'){
+          title.style.color='black';
+        }else{
+          title.style.color = 'blue';
+        }
+      }
+      function boldOn(){
+        let paragraph = document.getElementById("paragraph");
+        paragraph.style.fontWeight = 'bold';
+      }
+      function boldOff(){
+        let paragraph = document.getElementById("paragraph");                                                                                
+        paragraph.style.fontWeight = 'normal';
+      }
+
+      function thanks(){
+          let elementoId = document.getElementById("paragraph");
+          elementoId.innerHTML="Obrigado pelo click!";
+      }
+    </script>
+  </body>
+</html>

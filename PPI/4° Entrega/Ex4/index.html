@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <title>Exercício 4</title>
+  </head>
+  <body>
+    <main>
+      <button onclick="calculateDelta()">Calcular</button>
+      <h1 id="answer"></h1>
+    </main>
+    <script>
+      function calculateDelta(){
+        let a,b,c,d;
+        a = parseInt(prompt("Digite A:"));
+        b = parseInt(prompt("Digite B:"));
+        c = parseInt(prompt("Digite C:"));
+        delta = Math.pow(b,2)-4*a*c;
+        document.getElementById("answer").innerHTML="O delta é: "+ delta;
+      }
+    </script>
+  </body>
+</html>

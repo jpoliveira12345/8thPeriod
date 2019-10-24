@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+      <meta charset="UTF-8">
+      <title>Exercício 3</title>
+  </head>
+  <body>
+    <main>
+      <img src="index.jpeg" alt="border collie" onmouseover="withBorder(this)" onmouseout="withOutBorder(this)">
+      <img src="index.jpeg" alt="border collie" onmouseover="withBorder(this)" onmouseout="withOutBorder(this)">
+      <img src="index.jpeg" alt="border collie" onmouseover="withBorder(this)" onmouseout="withOutBorder(this)">
+      <img src="index.jpeg" alt="border collie" onmouseover="withBorder(this)" onmouseout="withOutBorder(this)">
+      <img src="index.jpeg" alt="border collie" onmouseover="withBorder(this)" onmouseout="withOutBorder(this)">
+    </main>
+    <script>
+      function withBorder(element){
+        element.style.border = "5px solid blue";
+      }
+      function withOutBorder(element){
+        element.style.border = "none";
+      }
+    </script>
+  </body>
+</html>

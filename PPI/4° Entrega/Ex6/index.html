@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <title>Exercício 6</title>
+  </head>
+  <body>
+      <main>
+        <form name="form1" action="" method="post" onsubmit="pesoIdeal()">
+          <input type="radio" name="sexo" id="M" value="Masculino"> Masculino
+          <input type="radio" name="sexo" id="F" value="Feminino"> Feminino
+          <input type="text" name="heigth" id="heigth">
+          <input type="submit" value="Testar">
+        </form>
+      </main>
+      <script>
+        function getSelectedRadioValue(radios){
+          for (var i = 0, length = radios.length; i < length; i++){
+            if (radios[i].checked)
+            return radios[i].value;
+          }
+          return null;
+        }
+        function pesoIdeal(){
+          var radios = document.getElementsByName("sexo");
+          var radioValueSelected = getSelectedRadioValue(radios);
+          var heigth = document.forms["form1"]["heigth"].value;
+          var ideal = parseFloat(heigth);
+          if(radioValueSelected==="Masculino"){
+            ideal = (72.7*ideal)-58;
+          }else{
+            ideal = (62.1*ideal)-44.7;
+          }
+          alert("Peso ideal: " + ideal + "Kg");
+        }
+      </script>
+    </body>
+</html>
