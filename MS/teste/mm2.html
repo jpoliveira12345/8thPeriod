@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+        <script src="geraintervalos.js"></script>
+    </head>
+    <body>
+    <span style="width: 48%;border: cyan;border-style: solid;display: inline-block;position: relative;">
+        <h1>Parâmetros de Chegada</h1>
+        <input type="radio" name="tipoChegada" onclick="aNChegada=1;" value="uniforme">unifome
+        <input type="radio" name="tipoChegada" value="constante">constante
+        <input type="radio" name="tipoChegada" onclick="aNChegada=1;" value="exponencial">exponencial<br>
+        <br><br>Usando o método do congruente linear digite o multiplicador e módulo respectivamente
+        <br><input type="number" id="a-chegada"></input><input type="number" id="m-chegada"></input>
+        <br>Ou o valor para distribuição constante
+        <input  type="number" id="constante-chegada"></input>
+    </span>
+    <span style="width: 48%;border: cyan;border-style: solid;display: inline-block;position: relative;">
+        <h1>Parâmetros de Saída</h1>
+        <input type="radio" name="tipoSaida" onclick="aNChegada=1;" value="uniforme">unifome
+        <input type="radio" name="tipoSaida" value="constante">constante
+        <input type="radio" name="tipoSaida" onclick="aNChegada=1;" value="exponencial">exponencial<br>
+        <br><br>Usando o método do congruente linear digite o multiplicador e módulo respectivamente
+        <br><input  type="number" id="a-saida"></input><input type="number"  id="m-saida"></input>
+        <br>Ou o valor para distribuição constante
+        <input  type="number" id="constante-saida"></input>
+    </span>
+    <div id="conteudo" style="overflow: scroll; height: 30%;">
+        <button onclick="comecar(this)">INICIAR SIMULAÇÃO</button>
+    </div>
+    <div id="tabela2"></div>
+    <br>
+    
+    <table border="1" width="100%" id="tabela">
+        <thead>
+            <tr>
+            <th>Cliente</th>
+            <th>Horário de chegada</th>
+            <th>Tempo na fila</th>
+            <th>Tempo de serviço</th>
+            <th>Tempo no sistema</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+        </table>
+        
+    </div>
+</body>
+</html>
