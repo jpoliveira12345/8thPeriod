@@ -12,14 +12,15 @@ var mSaida;
 function geraChegadaUniforme() {
     xNChegada = (xNChegada * aChegada) % mChegada;
     //return xNChegada / mChegada;
-    return parseInt(Math.random()*10);
+    return parseInt(Math.random() * 10);
 }
-
 function geraChegadaConstante() {
-    return $("#constante-chegada").val() | 7;
+    let chegada =  $("#constante-chegada").val();
+    if(chegada){
+        return chegada;
+    }
+    return 7;
 }
-
-
 function geraChegadaExponencial() {
     let U = geraSaidaUniforme();
     return (-1 / LAMBDA) * log(1 - U);
@@ -45,6 +46,8 @@ function geraHoraChegada() {
             alert(message);
             throw message;
     }
+
+    // console.log("tempo entre chegadas ", tempoEntreChegada);
     return tempoEntreChegada * MULTIPLICADORTEMPO;
 }
 
@@ -53,7 +56,11 @@ function geraSaidaUniforme() {
     return xNSaida / mSaida;
 }
 function geraSaidaConstante() {
-    return $("#constante-saida").val() | 7;
+    let saida = $("#constante-saida").val() ;
+    if(saida){
+        return saida;
+    }
+    return  3;
 }
 function geraSaidaExponencial() {
     let U = geraSaidaUniforme();
@@ -81,6 +88,6 @@ function geraHoraSaida() {
             throw message;
     }
     tempoTotalServico += tempoEntreSaida * MULTIPLICADORTEMPO;
-    return tempoEntreSaida;
+    return tempoEntreSaida * MULTIPLICADORTEMPO;
 }
 

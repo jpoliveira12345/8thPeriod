@@ -18,10 +18,10 @@
     <br>Ou o valor para distribuição constante
     <input id="constante-saida"></input>
 </span>
-<span style="justify-content: center;display: flex;">
+<div id="conteudo" style="overflow: scroll; height: 30%;">
     <button onclick="comecar(this)">INICIAR SIMULAÇÃO</button>
-    <!-- <button onclick="finalizar(this)">FINALIZAR SIMULAÇÃO</button> -->
-</span>
+</div>
+<div id="tabela2"></div>
 <br>
 
 <table border="1" width="100%" id="tabela">
@@ -38,9 +38,6 @@
         
     </tbody>
   </table>
-
-
-<div id="conteudo" style=" height: 800px;">
     
 </div>
 
@@ -48,7 +45,6 @@
 <script src="geraintervalos.js"></script>
 <script>
 
-    addOnTable("asdfsad","afdasdfasfd","asdfasdf","asdfasfd","adfsafd")
     var estado = {
         OCUPADO: 0,
         LIVRE: 1
@@ -64,6 +60,7 @@
     var pessoasQueNaoEsperaram;
     var tempoTotalFila;
     var tempoTotalServico;
+    var clienteID;
 
     class ItemFila {
         constructor(chegada, tempoServico) {
@@ -108,7 +105,7 @@
         tempoTotalServico = 0;
         xNChegada = 1;
         xNSaida = 1;
-        $("#conteudo").empty();
+        clienteID = 0;
     }
     function finalizar(button) {
         fim = true;
@@ -116,7 +113,7 @@
         button.setAttribute( "onClick", "javascript: comecar(this);" );
     }
     function geraChegada() {
-        if (!fim) {
+        if (fim === false) {
             let pessoa = new ItemFila(Date.now(), geraHoraSaida());
             FILA.push(pessoa);
             if (ES == estado.LIVRE) {
@@ -126,12 +123,13 @@
                 processaSaida();
             }
 
-
-
             totalPessoas++;
             window.setTimeout(geraChegada, geraHoraChegada());
+        } else {
+            if (FILA.length == 0) {
+                geraTabelaFinal();
+            }
 
-            $("#conteudo").append("<p>","CHEGADA ÀS ", Date(pessoa.chegada), " tamanho de fila:", FILA.length,"</p>");
         }
     }
 
@@ -151,26 +149,32 @@
         let now = Date.now();
         let tempoParcialSitema = now - pessoa.chegada;
         if (tempoParcialSitema < pessoa.tempoServico) {
-            console.log("deu ruim");
+            console.error("deu ruim");
         }
-        let tempoParcialFila = tempoParcialSitema - pessoa.tempoServico;
-        tempoTotalFila += tempoParcialFila;
-        $("#conteudo").append("<p>","SAIDA ÀS: ", Date(now), ", tamanho de fila: ", FILA.length,
-            ", horário de chegada: ", Date(pessoa.chegada), ", tempo de fila: ", tempoParcialFila,
-            ", tempo de serviço: ", pessoa.tempoServico,"</p>"
-        );
-        if (FILA.length == 0 && fim) {
-            let pessoasQueEsperaram = totalPessoas - pessoasQueNaoEsperaram;
-            let tempoTotal = now - horarioInicioSimulacao;
+        let tempoParcialFila = Math.round((tempoParcialSitema - pessoa.tempoServico)/1000);
+        tempoTotalFila += tempoParcialFila; 
+        let tempoServico = Math.round(pessoa.tempoServico/1000);
 
-            $("#conteudo").append("<p>","Total de ", totalPessoas, " pessoas na simulação,",
-                " o serviço esteve livre numa proporção de ", horarioLivreTotal * 100 / tempoTotal, "% do tempo,",
-                "tempo médio de espera na fila: ", tempoTotalFila / tempoTotal,
-                "a probabilidade de um cliente esperar na fila é: ", pessoasQueEsperaram * 100 / totalPessoas, "%",
-                "o tempo médio de serviço foi: ", tempoTotalServico / tempoTotal,
-                "o tempo médio despendido no sistema foi: ", (tempoTotalFila + tempoTotalServico) / tempoTotal, "</p>"
-            );
+        addOnTable(clienteID++, new Date(pessoa.chegada).toUTCString(),tempoParcialFila, tempoServico, tempoParcialFila + tempoServico )
+        if (FILA.length == 0 && fim === true) {
+            geraTabelaFinal();
         }
+    }
+
+
+    function geraTabelaFinal(){
+        let tempoMedioEspera = tempoTotalFila / tempoTotal;
+        let probClienteEsperar = pessoasQueEsperaram * 100 / totalPessoas;
+        let probOpLivrem =  horarioLivreTotal * 100 / tempoTotal;
+        let tempoMedioEspera = tempoTotalServico / tempoTotal;
+        let tempoMedioSistema = (tempoTotalFila + tempoTotalServico) / tempoTotal;
+
+        $("#conteudo").append("<p>","Tempo médio de espera: ", tempoMedioEspera,"</p>")
+        $("#conteudo").append("<p>","Probabilidade do cliente Esperar: ", tempoMedioEspera,"</p>")
+        $("#conteudo").append("<p>","Probabilidade do operador estar livre: ", tempoMedioEspera,"</p>")
+        $("#conteudo").append("<p>","Tempo médio de serviço: ", tempoMedioEspera,"</p>")
+        $("#conteudo").append("<p>","Tempo médio no sistema: ", tempoMedioEspera,"</p>")
+        $("#conteudo").append("<br>")
     }
 
 </script>
