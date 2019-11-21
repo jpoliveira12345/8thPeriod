@@ -1,0 +1,176 @@
+<span style="width: 48%;border: cyan;border-style: solid;display: inline-block;position: relative;">
+    <h1>Parâmetros de Chegada</h1>
+    <input type="radio" name="tipoChegada" onclick="aNChegada=1;" value="uniforme">unifome
+    <input type="radio" name="tipoChegada" value="constante">constante
+    <input type="radio" name="tipoChegada" onclick="aNChegada=1;" value="exponencial">exponencial<br>
+    <br><br>Usando o método do congruente linear digite o multiplicador e módulo respectivamente
+    <br><input id="a-chegada"></input><input id="m-chegada"></input>
+    <br>Ou o valor para distribuição constante
+    <input id="constante-chegada"></input>
+</span>
+<span style="width: 48%;border: cyan;border-style: solid;display: inline-block;position: relative;">
+    <h1>Parâmetros de Saída</h1>
+    <input type="radio" name="tipoSaida" onclick="aNChegada=1;" value="uniforme">unifome
+    <input type="radio" name="tipoSaida" value="constante">constante
+    <input type="radio" name="tipoSaida" onclick="aNChegada=1;" value="exponencial">exponencial<br>
+    <br><br>Usando o método do congruente linear digite o multiplicador e módulo respectivamente
+    <br><input id="a-saida"></input><input id="m-saida"></input>
+    <br>Ou o valor para distribuição constante
+    <input id="constante-saida"></input>
+</span>
+<span style="justify-content: center;display: flex;">
+    <button onclick="comecar(this)">INICIAR SIMULAÇÃO</button>
+    <!-- <button onclick="finalizar(this)">FINALIZAR SIMULAÇÃO</button> -->
+</span>
+<br>
+
+<table border="1" width="100%" id="tabela">
+    <thead>
+      <tr>
+        <th>Cliente</th>
+        <th>Horário de chegada</th>
+        <th>Tempo na fila</th>
+        <th>Tempo de serviço</th>
+        <th>Tempo no sistema</th>
+      </tr>
+    </thead>
+    <tbody>
+        
+    </tbody>
+  </table>
+
+
+<div id="conteudo" style=" height: 800px;">
+    
+</div>
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="geraintervalos.js"></script>
+<script>
+
+    addOnTable("asdfsad","afdasdfasfd","asdfasdf","asdfasfd","adfsafd")
+    var estado = {
+        OCUPADO: 0,
+        LIVRE: 1
+    }
+
+    var ES;
+    var FILA;
+    var horarioLivreInicio;
+    var horarioLivreTotal;
+    var horarioInicioSimulacao;
+    var fim;
+    var totalPessoas;
+    var pessoasQueNaoEsperaram;
+    var tempoTotalFila;
+    var tempoTotalServico;
+
+    class ItemFila {
+        constructor(chegada, tempoServico) {
+            this.chegada = chegada;
+            this.tempoServico = tempoServico;
+        }
+    };
+
+    function addOnTable( cliente, horaChegada, tempoFila, tempoServico, tempoSistema ){
+        var tabela = document.getElementById("tabela")
+        var row = tabela.insertRow(-1);
+
+        var cell1 = row.insertCell(0);
+        cell1.innerHTML = cliente;
+        
+        var cell2 = row.insertCell(1);
+        cell2.innerHTML = horaChegada;
+
+        var cell3 = row.insertCell(2);
+        cell3.innerHTML = tempoFila;
+
+        var cell4 = row.insertCell(3);
+        cell4.innerHTML = tempoServico;
+
+        var cell5 = row.insertCell(4);
+        cell5.innerHTML = tempoSistema;
+    }
+
+    function comecar(button) {
+        button.innerHTML = "FINALIZAR SIMULAÇÃO"
+        button.setAttribute( "onClick", "javascript: finalizar(this);" );
+        ES = estado.LIVRE;
+        FILA = [];
+        horarioLivreInicio = Date.now();
+        horarioLivreTotal = 0;
+        window.setTimeout(geraChegada, geraHoraChegada());
+        fim = false;
+        totalPessoas = 0;
+        horarioInicioSimulacao = Date.now();
+        pessoasQueNaoEsperaram = 0;
+        tempoTotalFila = 0;
+        tempoTotalServico = 0;
+        xNChegada = 1;
+        xNSaida = 1;
+        $("#conteudo").empty();
+    }
+    function finalizar(button) {
+        fim = true;
+        button.innerHTML = "INICIAR SIMULAÇÃO"
+        button.setAttribute( "onClick", "javascript: comecar(this);" );
+    }
+    function geraChegada() {
+        if (!fim) {
+            let pessoa = new ItemFila(Date.now(), geraHoraSaida());
+            FILA.push(pessoa);
+            if (ES == estado.LIVRE) {
+                ES = estado.OCUPADO;
+                pessoasQueNaoEsperaram++;
+                horarioLivreTotal += Date.now() - horarioLivreInicio
+                processaSaida();
+            }
+
+
+
+            totalPessoas++;
+            window.setTimeout(geraChegada, geraHoraChegada());
+
+            $("#conteudo").append("<p>","CHEGADA ÀS ", Date(pessoa.chegada), " tamanho de fila:", FILA.length,"</p>");
+        }
+    }
+
+    function processaSaida() {
+        let chegada;
+        if (FILA.length > 0) {
+            chegada = FILA.shift();
+            window.setTimeout(processaSaida, chegada.tempoServico + 1);
+            window.setTimeout(geraSaida, chegada.tempoServico, chegada);
+
+        } else {
+            ES = estado.LIVRE;
+            horarioLivreInicio = Date.now();
+        }
+    }
+    function geraSaida(pessoa) {
+        let now = Date.now();
+        let tempoParcialSitema = now - pessoa.chegada;
+        if (tempoParcialSitema < pessoa.tempoServico) {
+            console.log("deu ruim");
+        }
+        let tempoParcialFila = tempoParcialSitema - pessoa.tempoServico;
+        tempoTotalFila += tempoParcialFila;
+        $("#conteudo").append("<p>","SAIDA ÀS: ", Date(now), ", tamanho de fila: ", FILA.length,
+            ", horário de chegada: ", Date(pessoa.chegada), ", tempo de fila: ", tempoParcialFila,
+            ", tempo de serviço: ", pessoa.tempoServico,"</p>"
+        );
+        if (FILA.length == 0 && fim) {
+            let pessoasQueEsperaram = totalPessoas - pessoasQueNaoEsperaram;
+            let tempoTotal = now - horarioInicioSimulacao;
+
+            $("#conteudo").append("<p>","Total de ", totalPessoas, " pessoas na simulação,",
+                " o serviço esteve livre numa proporção de ", horarioLivreTotal * 100 / tempoTotal, "% do tempo,",
+                "tempo médio de espera na fila: ", tempoTotalFila / tempoTotal,
+                "a probabilidade de um cliente esperar na fila é: ", pessoasQueEsperaram * 100 / totalPessoas, "%",
+                "o tempo médio de serviço foi: ", tempoTotalServico / tempoTotal,
+                "o tempo médio despendido no sistema foi: ", (tempoTotalFila + tempoTotalServico) / tempoTotal, "</p>"
+            );
+        }
+    }
+
+</script>
