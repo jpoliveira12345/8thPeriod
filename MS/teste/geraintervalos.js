@@ -1,48 +1,31 @@
-var ADEFAULT = 65539;
-var MDEFAULT = 1073741824;
-var LAMBDA = 10;
-var MULTIPLICADORTEMPO = 1000;
-var aChegada;
-var xNChegada;
-var mChegada;
-var aSaida;
-var xNSaida;
-var mSaida;
-var ES;
-var FILA;
-var horarioLivreInicio;
-var horarioLivreTotal;
-var horarioInicioSimulacao;
-var fim;
-var totalPessoas;
-var pessoasQueNaoEsperaram;
-var tempoTotalFila;
-var tempoTotalServico;
-var clienteID;
-var estado = {
-    OCUPADO: 0,
-    LIVRE: 1
+function createFila( nItensFila ){
+    let FILA = [];
+    for (i=0;i<nItensFila;i++){
+        let ItemFila = new Object();
+        ItemFila.horaChegada = horaChegada();
+        ItemFila.tempoServico = tempoServico();
+        FILA.push(ItemFila);
+    }
+    return FILA.sort((a, b) => b.horaChegada - a.horaChegada)
 }
 
-class ItemFila {
-    constructor(chegada, tempoServico) {
-        this.chegada = chegada;
-        this.tempoServico = tempoServico;
-    }
+function horaChegada(  ){
+    // TODO: Sortear os tempos, utilizar a entrada do usuário para as distribuições
+    // TODO: Desativar os campos quando iniciada a simulação
 }
 
-class Servidor{
+function tempoServico(){
+    // TODO: Sortear os tempos, utilizar a entrada do usuário para as distribuições
+}
 
-    constructor() {
-    }
+function criaServidor(){
+    let servidor = new Object();
+    servidor.
+    return servidor;
+}
 
-    atender(){
-        
-    };
-
-    finalizarAtendimento(){
-
-    }
+function init(servidor, duracaoAtendimento){
+    servidor.duracaoAtendimento = duracaoAtendimento;
 }
 
 function addOnTable( cliente, horaChegada, tempoFila, tempoServico, tempoSistema ){
@@ -89,6 +72,7 @@ function finalizar(button) {
     button.innerHTML = "INICIAR SIMULAÇÃO"
     button.setAttribute( "onClick", "javascript: comecar(this);" );
 }
+
 function geraChegada() {
     if (fim === false) {
         let pessoa = new ItemFila(Date.now(), geraHoraSaida());
