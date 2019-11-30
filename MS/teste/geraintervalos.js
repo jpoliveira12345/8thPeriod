@@ -2,35 +2,33 @@ function createFila( nItensFila ){
     let FILA = [];
     for (i=0;i<nItensFila;i++){
         let ItemFila = new Object();
-        ItemFila.horaChegada = horaChegada();
-        ItemFila.tempoServico = tempoServico();
+        ItemFila.horaChegada = i //horaChegada();
+        ItemFila.tempoServico = 2*i + 1 //tempoServico();
+        ItemFila.tempoEsperaFila = 0;
+        ItemFila.tempoOcioso = 0;
         FILA.push(ItemFila);
     }
-    return FILA.sort((a, b) => b.horaChegada - a.horaChegada)
+    return FILA.sort((a, b) => a.horaChegada - b.horaChegada)
 }
 
 function horaChegada(  ){
     // TODO: Sortear os tempos, utilizar a entrada do usuário para as distribuições
     // TODO: Desativar os campos quando iniciada a simulação
+    return 1;
 }
 
 function tempoServico(){
     // TODO: Sortear os tempos, utilizar a entrada do usuário para as distribuições
+    return 1;
 }
 
 function criaServidor(){
-    let servidor = new Object();
-    servidor.isFull = false;
-    return servidor;
-}
-
-function loopSistema(){
-    // checa a FILA;
-    // Se vazia
-        // Processa S1 e S2
-    // Se cheia
-        // Insere, se possível, e processa S1
-        // Insere, se possível, e processa S2
+    let servidor = new Object()
+    servidor.isFull = false
+    servidor.tempoLivre = 0
+    servidor.momentoFicaLivre = 0
+    servidor.itemFila = null
+    return servidor
 }
 
 function init(servidor, duracaoAtendimento){
@@ -63,174 +61,85 @@ function verResultados(){
 function comecar() {
     $("#formulario :input").attr("disabled", true)
     tabela.hidden=false
-    addOnTable( 121, 12, 12, 12, 12 )
-    $('#botao').attr('value', 'Resultados')
+    $('#botao').html('Resultados')
     $('#botao').addClass('btn-primary')
     $('#botao').addClass('btn-success')
     $("#bfCaptchaEntry").click(verResultados())
 
-    const nItensFila = $('#nClientes').val()
+    const nItensFila = parseInt($('#nClientes').val())
     let fila = createFila(nItensFila)
-    let itemFila = fila.shift()
-    let S1 = criaServidor();
-    let S1 = criaServidor();
+    let S1 = criaServidor()
+    let S2 = criaServidor()
+    let tempoTotalEsperaFila = 0
+    let clientesEsperaram = 0
+    let tempoTotalSimulacao = 0
+    let tempoMedioSistema = 0
+    let tempo = 0
+    let i = 1;
 
-    while ( fila.length !== 0 && S1.isFull !== false && S2.isFull !== false ){
-        
-        itemFila = fila.shift()
-    }
-}
-
-function finalizar(button) {
-    fim = true;
-    button.innerHTML = "INICIAR SIMULAÇÃO"
-    button.setAttribute( "onClick", "javascript: comecar(this);" );
-}
-
-function geraChegada() {
-    if (fim === false) {
-        let pessoa = new ItemFila(Date.now(), geraHoraSaida());
-        FILA.push(pessoa);
-        if (ES == estado.LIVRE) {
-            ES = estado.OCUPADO;
-            pessoasQueNaoEsperaram++;
-            horarioLivreTotal += Date.now() - horarioLivreInicio
-            processaSaida();
+    while ( fila.length !== 0 ){
+        if ( S1.momentoFicaLivre <= S2.momentoFicaLivre ){
+                // Servidor 1 termina primeiro
+                S1.itemFila = fila.shift()
+                S1.itemFila.tempoEsperaFila = tempo - S1.itemFila.horaChegada  > 0 ? tempo - S1.itemFila.horaChegada : 0
+                S1.momentoFicaLivre = tempo + S1.itemFila.tempoServico
+                addOnTable( i + " - S1", S1.itemFila.horaChegada, S1.itemFila.tempoEsperaFila, S1.itemFila.tempoServico, tempo )
+                i += 1
+        } else {
+            // Servidor 2 termina primeiro
+            S2.itemFila = fila.shift()
+            S2.itemFila.tempoEsperaFila = tempo - S2.itemFila.horaChegada  > 0 ? tempo - S2.itemFila.horaChegada : 0
+            S2.momentoFicaLivre = tempo + S2.itemFila.tempoServico
+            addOnTable( i + " - S2", S2.itemFila.horaChegada, S2.itemFila.tempoEsperaFila, S2.itemFila.tempoServico, tempo )
+            i += 1        
         }
-
-        totalPessoas++;
-        window.setTimeout(geraChegada, geraHoraChegada());
-    } else {
-        if (FILA.length == 0) {
-            geraTabelaFinal();
-        }
-
+        fila[0].tempoOcioso = tempo;
+        tempo = (S1.momentoFicaLivre <= S2.momentoFicaLivre) ?  S1.momentoFicaLivre : S2.momentoFicaLivre
+        fila[0].tempoOcioso = tempo - fila[0].tempoOcioso
+        if ( fila[0] > 0 )
+            this.clientesEsperaram++;
     }
+    tempo = (S1.momentoFicaLivre >= S2.momentoFicaLivre) ?  S1.momentoFicaLivre : S2.momentoFicaLivre
+
 }
 
-function processaSaida() {
-    let chegada;
-    if (FILA.length > 0) {
-        chegada = FILA.shift();
-        window.setTimeout(processaSaida, chegada.tempoServico + 1);
-        window.setTimeout(geraSaida, chegada.tempoServico, chegada);
+// function geraSaidaUniforme() {
+//     xNSaida = (xNSaida * aSaida) % mSaida;
+//     return xNSaida / mSaida;
+// }
+// function geraSaidaConstante() {
+//     let saida = $("#constante-saida").val() ;
+//     if(saida){
+//         return saida;
+//     }
+//     return  3;
+// }
+// function geraSaidaExponencial() {
+//     let U = geraSaidaUniforme();
+//     return (-1 / LAMBDA) * log(1 - U);
+// }
 
-    } else {
-        ES = estado.LIVRE;
-        horarioLivreInicio = Date.now();
-    }
-}
-function geraSaida(pessoa) {
-    let now = Date.now();
-    let tempoParcialSitema = now - pessoa.chegada;
-    if (tempoParcialSitema < pessoa.tempoServico) {
-        console.error("deu ruim");
-    }
-    let tempoParcialFila = Math.round((tempoParcialSitema - pessoa.tempoServico)/1000);
-    tempoTotalFila += tempoParcialFila; 
-    let tempoServico = Math.round(pessoa.tempoServico/1000);
-
-    addOnTable(clienteID++, new Date(pessoa.chegada).toUTCString(),tempoParcialFila, tempoServico, tempoParcialFila + tempoServico )
-    if (FILA.length == 0 && fim === true) {
-        geraTabelaFinal();
-    }
-}
-
-
-function geraTabelaFinal(){
-    let tempoMedioEspera = tempoTotalFila / tempoTotal;
-    let probClienteEsperar = pessoasQueEsperaram * 100 / totalPessoas;
-    let probOpLivrem =  horarioLivreTotal * 100 / tempoTotal;
-    // let tempoMedioEspera = tempoTotalServico / tempoTotal;
-    let tempoMedioSistema = (tempoTotalFila + tempoTotalServico) / tempoTotal;
-
-    $("#conteudo").append("<p>","Tempo médio de espera: ", tempoMedioEspera,"</p>")
-    $("#conteudo").append("<p>","Probabilidade do cliente Esperar: ", tempoMedioEspera,"</p>")
-    $("#conteudo").append("<p>","Probabilidade do operador estar livre: ", tempoMedioEspera,"</p>")
-    $("#conteudo").append("<p>","Tempo médio de serviço: ", tempoMedioEspera,"</p>")
-    $("#conteudo").append("<p>","Tempo médio no sistema: ", tempoMedioEspera,"</p>")
-    $("#conteudo").append("<br>")
-}
-
-function geraChegadaUniforme() {
-    xNChegada = (xNChegada * aChegada) % mChegada;
-    //return xNChegada / mChegada;
-    return parseInt(Math.random() * 10);
-}
-function geraChegadaConstante() {
-    let chegada =  $("#constante-chegada").val();
-    if(chegada){
-        return chegada;
-    }
-    return 7;
-}
-function geraChegadaExponencial() {
-    let U = geraSaidaUniforme();
-    return (-1 / LAMBDA) * log(1 - U);
-}
-
-function geraHoraChegada() {
-    let distribuicaoChegada = $("input[name='tipoChegada']:checked").val();
-    let tempoEntreChegada;
-    aChegada = $("#a-chegada").val() | ADEFAULT;
-    mChegada = $("#m-chegada").val() | MDEFAULT;
-    switch (distribuicaoChegada) {
-        case 'uniforme':
-            tempoEntreChegada = geraChegadaUniforme();
-            break;
-        case 'constante':
-            tempoEntreChegada = geraChegadaConstante();
-            break;
-        case 'exponencial':
-            tempoEntreChegada = geraChegadaExponencial();
-            break;
-        default:
-            let message = "distribuição de chegada não definido";
-            alert(message);
-            throw message;
-    }
-
-    // console.log("tempo entre chegadas ", tempoEntreChegada);
-    return tempoEntreChegada * MULTIPLICADORTEMPO;
-}
-
-function geraSaidaUniforme() {
-    xNSaida = (xNSaida * aSaida) % mSaida;
-    return xNSaida / mSaida;
-}
-function geraSaidaConstante() {
-    let saida = $("#constante-saida").val() ;
-    if(saida){
-        return saida;
-    }
-    return  3;
-}
-function geraSaidaExponencial() {
-    let U = geraSaidaUniforme();
-    return (-1 / LAMBDA) * log(1 - U);
-}
-
-function geraHoraSaida() {
-    let distribuicaoSaida = $("input[name='tipoSaida']:checked").val();
-    let tempoEntreSaida;
-    aSaida = $("#a-saida").val() | ADEFAULT;
-    mSaida = $("#m-saida").val() | MDEFAULT;
-    switch (distribuicaoSaida) {
-        case 'uniforme':
-            tempoEntreSaida = geraSaidaUniforme();
-            break;
-        case 'constante':
-            tempoEntreSaida = geraSaidaConstante();
-            break;
-        case 'exponencial':
-            tempoEntreSaida = geraSaidaExponencial();
-            break;
-        default:
-            let message = "distribuição de saida não definido";
-            alert(message);
-            throw message;
-    }
-    tempoTotalServico += tempoEntreSaida * MULTIPLICADORTEMPO;
-    return tempoEntreSaida * MULTIPLICADORTEMPO;
-}
+// function geraHoraSaida() {
+//     let distribuicaoSaida = $("input[name='tipoSaida']:checked").val();
+//     let tempoEntreSaida;
+//     aSaida = $("#a-saida").val() | ADEFAULT;
+//     mSaida = $("#m-saida").val() | MDEFAULT;
+//     switch (distribuicaoSaida) {
+//         case 'uniforme':
+//             tempoEntreSaida = geraSaidaUniforme();
+//             break;
+//         case 'constante':
+//             tempoEntreSaida = geraSaidaConstante();
+//             break;
+//         case 'exponencial':
+//             tempoEntreSaida = geraSaidaExponencial();
+//             break;
+//         default:
+//             let message = "distribuição de saida não definido";
+//             alert(message);
+//             throw message;
+//     }
+//     tempoTotalServico += tempoEntreSaida * MULTIPLICADORTEMPO;
+//     return tempoEntreSaida * MULTIPLICADORTEMPO;
+// }
 
