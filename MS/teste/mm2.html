@@ -2,54 +2,101 @@
 <html lang="pt-br">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=, initial-scale=1.0">
+        <meta name="viewport" content="initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Document</title>
-        <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-        <script src="geraintervalos.js"></script>
+        <title>MM2</title>
+        <link rel="stylesheet" href="assets/Bootstrap/bootstrap.min.css">
+        <script src="assets/jQuery/jquery-1.12.4.min.js"></script>
+        <script src="assets/PopperJS/popper.min.js"></script>
+        <script src="assets/BootstrapMin/bootstrap.min.js"></script>
+        <script src="./geraintervalos.js"></script>
     </head>
-    <body>
-    <span style="width: 48%;border: cyan;border-style: solid;display: inline-block;position: relative;">
-        <h1>Tempo entre chegadas (TEC)</h1>
-        <input type="radio" name="tipoChegada" onclick="aNChegada=1;" value="uniforme">unifome
-        <input type="radio" name="tipoChegada" value="constante">constante
-        <input type="radio" name="tipoChegada" onclick="aNChegada=1;" value="exponencial">exponencial<br>
-        <br><br>Usando o método do congruente linear digite o multiplicador e módulo respectivamente
-        <br><input type="number" id="a-chegada"></input><input type="number" id="m-chegada"></input>
-        <br>Ou o valor para distribuição constante
-        <input  type="number" id="constante-chegada"></input>
-    </span>
-    <span style="width: 48%;border: cyan;border-style: solid;display: inline-block;position: relative;">
-        <h1>Tempo de serviço (TS)</h1>
-        <input type="radio" name="tipoSaida" onclick="aNChegada=1;" value="uniforme">unifome
-        <input type="radio" name="tipoSaida" value="constante">constante
-        <input type="radio" name="tipoSaida" onclick="aNChegada=1;" value="exponencial">exponencial<br>
-        <br><br>Usando o método do congruente linear digite o multiplicador e módulo respectivamente
-        <br><input  type="number" id="a-saida"></input><input type="number"  id="m-saida"></input>
-        <br>Ou o valor para distribuição constante
-        <input  type="number" id="constante-saida"></input>
-    </span>
-    <div id="conteudo" style="overflow: scroll; height: 30%;">
-        <button onclick="comecar(this)">INICIAR SIMULAÇÃO</button>
-    </div>
-    <div id="tabela2"></div>
-    <br>
-    
-    <table border="1" width="100%" id="tabela">
-        <thead>
-            <tr>
-            <th>Cliente</th>
-            <th>Horário de chegada</th>
-            <th>Tempo na fila</th>
-            <th>Tempo de serviço</th>
-            <th>Tempo no sistema</th>
-            </tr>
-        </thead>
-        <tbody>
-            
-        </tbody>
+    <body class="container-fluid">
+        <p class="text-center h1 mb-4">Simulação com MM2</p>
+        <p class="text-right h6 mb-4">Gustavo de Faria e João Paulo</p>
+        <form id="formulario" action="#!">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm">
+                    <fieldset class="border p-2">
+                        <legend  class="w-auto">Tempo entre chegadas (TEC)</legend>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="clTec">Congruente Linear</label>
+                                <input type="number" class="form-control" id="clTec" placeholder="Congruente Linear" value="10" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="mTec">Módulo</label>
+                                <input type="number" class="form-control" id="mTec" placeholder="Módulo" value="5" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="dTec">Distribuição</label>
+                                <select id="dTec" class="form-control">
+                                    <option selected>Uniforme</option>
+                                    <option>Constante</option>
+                                    <option>Exponencial</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-9">
+                                <label for="vduTec">Valor da distribuição uniforme</label>
+                                <input type="number" class="form-control" id="vduTec" value="50">
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                    <div class="col-sm">
+                        <fieldset class="border p-2">
+                            <legend  class="w-auto">Tempo de serviço (TS)</legend>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputEmail4">Congruente Linear</label>
+                                    <input type="number" class="form-control" id="clTs" placeholder="Congruente Linear"  value="14" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="mTs">Módulo</label>
+                                    <input type="number" class="form-control" id="mTs" placeholder="Módulo"  value="2" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="dTs">Distribuição</label>
+                                    <select id="dTs" class="form-control">
+                                        <option selected>Uniforme</option>
+                                        <option>Constante</option>
+                                        <option>Exponencial</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-9">
+                                    <label for="vduTs">Valor da distribuição uniforme</label>
+                                    <input type="number" class="form-control" id="vduTs" value="9">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  for="nClientes">N° de clientes</label>
+                    <input type="text" class="form-control" id="nClientes" placeholder="150" value="100" required>
+                </div>
+            </form>
+        </div>
+        <button class="btn btn-primary btn-lg btn-block" type="button" id="botao" onclick="comecar()">INICIAR SIMULAÇÃO</button>
+                    
+       
+        <table class="table" id="tabela" hidden>
+            <thead>
+              <tr>
+                <th scope="col">Cliente</th>
+                <th scope="col">Horário de chegada</th>
+                <th scope="col">Tempo na fila</th>
+                <th scope="col">Tempo de serviço</th>
+                <th scope="col">Tempo no sistema</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
         </table>
-        
     </div>
 </body>
 </html>

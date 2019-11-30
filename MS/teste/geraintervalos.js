@@ -20,51 +20,65 @@ function tempoServico(){
 
 function criaServidor(){
     let servidor = new Object();
-    servidor.
+    servidor.isFull = false;
     return servidor;
+}
+
+function loopSistema(){
+    // checa a FILA;
+    // Se vazia
+        // Processa S1 e S2
+    // Se cheia
+        // Insere, se possível, e processa S1
+        // Insere, se possível, e processa S2
 }
 
 function init(servidor, duracaoAtendimento){
     servidor.duracaoAtendimento = duracaoAtendimento;
 }
-
 function addOnTable( cliente, horaChegada, tempoFila, tempoServico, tempoSistema ){
     var tabela = document.getElementById("tabela")
     var row = tabela.insertRow(-1);
-
+    
     var cell1 = row.insertCell(0);
     cell1.innerHTML = cliente;
     
     var cell2 = row.insertCell(1);
     cell2.innerHTML = horaChegada;
-
+    
     var cell3 = row.insertCell(2);
     cell3.innerHTML = tempoFila;
-
+    
     var cell4 = row.insertCell(3);
     cell4.innerHTML = tempoServico;
-
+    
     var cell5 = row.insertCell(4);
     cell5.innerHTML = tempoSistema;
 }
 
-function comecar(button) {
-    button.innerHTML = "FINALIZAR SIMULAÇÃO"
-    button.setAttribute( "onClick", "javascript: finalizar(this);" );
-    ES = estado.LIVRE;
-    FILA = [];
-    horarioLivreInicio = Date.now();
-    horarioLivreTotal = 0;
-    window.setTimeout(geraChegada, geraHoraChegada());
-    fim = false;
-    totalPessoas = 0;
-    horarioInicioSimulacao = Date.now();
-    pessoasQueNaoEsperaram = 0;
-    tempoTotalFila = 0;
-    tempoTotalServico = 0;
-    xNChegada = 1;
-    xNSaida = 1;
-    clienteID = 0;
+function verResultados(){
+    alert("Criar modal com resultados")
+}
+
+function comecar() {
+    $("#formulario :input").attr("disabled", true)
+    tabela.hidden=false
+    addOnTable( 121, 12, 12, 12, 12 )
+    $('#botao').attr('value', 'Resultados')
+    $('#botao').addClass('btn-primary')
+    $('#botao').addClass('btn-success')
+    $("#bfCaptchaEntry").click(verResultados())
+
+    const nItensFila = $('#nClientes').val()
+    let fila = createFila(nItensFila)
+    let itemFila = fila.shift()
+    let S1 = criaServidor();
+    let S1 = criaServidor();
+
+    while ( fila.length !== 0 && S1.isFull !== false && S2.isFull !== false ){
+        
+        itemFila = fila.shift()
+    }
 }
 
 function finalizar(button) {
