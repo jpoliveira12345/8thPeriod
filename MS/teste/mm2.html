@@ -34,15 +34,23 @@
                             <div class="form-group col-md-3">
                                 <label for="dTec">Distribuição</label>
                                 <select id="dTec" class="form-control">
-                                    <option selected>Uniforme</option>
-                                    <option>Constante</option>
-                                    <option>Exponencial</option>
+                                    <option value="U"selected>Uniforme</option>
+                                    <option value="C">Constante</option>
+                                    <option value="E" >Exponencial</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-9">
-                                <label for="vduTec">Valor da distribuição uniforme</label>
-                                <input type="number" class="form-control" id="vduTec" value="50">
+                            <div id="vdcTecL" class="form-group col-md-3">
+                                <label id="vdcTecLabel" for="vdcTec">Lambda</label>
+                                <input type="number" class="form-control" id="vdcTec" value="50" >
                             </div>
+                            <div id="aL" class="form-group col-md-3">
+                                    <label for="a">a</label>
+                                    <input type="number" class="form-control" id="a" value="50" >
+                            </div>
+                            <div id="bL" class="form-group col-md-3">
+                                <label for="b">b</label>
+                                <input type="number" class="form-control" id="b" value="50" >
+                            </div>    
                         </div>
                     </fieldset>
                 </div>
@@ -63,15 +71,23 @@
                                 <div class="form-group col-md-3">
                                     <label for="dTs">Distribuição</label>
                                     <select id="dTs" class="form-control">
-                                        <option selected>Uniforme</option>
-                                        <option>Constante</option>
-                                        <option>Exponencial</option>
+                                        <option value="U" selected>Uniforme</option>
+                                        <option value="C">Constante</option>
+                                        <option value="E" >Exponencial</option>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-9">
-                                    <label for="vduTs">Valor da distribuição uniforme</label>
-                                    <input type="number" class="form-control" id="vduTs" value="9">
+                                <div id="vdcTsL" class="form-group col-md-3">
+                                    <label id="vdcTsLabel" for="vdcTs">Lambda</label>
+                                    <input type="number" class="form-control" id="vdcTs" value="9" >
                                 </div>
+                                <div id="aL1" class="form-group col-md-3">
+                                        <label for="a1">a</label>
+                                        <input type="number" class="form-control" id="a1" value="50" >
+                                </div>
+                                <div id="bL1" class="form-group col-md-3">
+                                    <label for="b1">b</label>
+                                    <input type="number" class="form-control" id="b1" value="50" >
+                                </div> 
                             </div>
                         </fieldset>
                     </div>
@@ -98,5 +114,63 @@
             <tbody></tbody>
         </table>
     </div>
+    <script>
+    $("#vdcTecL").hide();
+    $("#vdcTsL").hide();
+    $("#dTec").change(function () {
+        if ( $('#dTec').val()=='C' ) {
+            $("#vdcTecL").removeClass("col-md-3");
+            $("#vdcTecL").addClass("col-md-9");
+            $("#vdcTecLabel").text("Constante");
+            $("#aL").hide();
+            $("#bL").hide();
+            $("#vdcTecL").show();
+            
+        }else if ( $('#dTec').val()=='U' ) {
+            $("#vdcTecLabel").text("Lambda");
+            $("#vdcTecL").removeClass("col-md-9");
+            $("#vdcTecL").addClass("col-md-3");
+            $("#aL").show();
+            $("#bL").show();
+            $("#vdcTecL").hide();
+            
+        }else if ( $('#dTec').val()=='E' ) {
+            $("#vdcTecL").show();
+            $("#vdcTecLabel").text("Lambda");
+            $("#vdcTecL").removeClass("col-md-3");
+            $("#vdcTecL").addClass("col-md-9");
+            $("#aL").hide();
+            $("#bL").hide();
+        }
+    })
+    
+    $("#dTs").change(function () {
+        if ( $('#dTs').val() =='C' ) {
+            $("#vdcTsL").removeClass("col-md-3");
+            $("#vdcTsL").addClass("col-md-9");
+            $("#vdcTsLabel").text("Constante");
+            $("#aL1").hide();
+            $("#bL1").hide();
+            $("#vdcTsL").show();
+        }else if ( $('#dTs').val()=='U' ) {
+            $("#vdcTsLabel").text("Lambda");
+            $("#vdcTsL").removeClass("col-md-9");
+            $("#vdcTsL").addClass("col-md-3");
+            $("#aL1").show();
+            $("#bL1").show();
+            $("#vdcTsL").hide();
+            
+        }else if ( $('#dTs').val()=='E' ) {
+            $("#vdcTsLabel").text("Lambda");
+            $("#vdcTsL").removeClass("col-md-3");
+            $("#vdcTsL").addClass("col-md-9");
+            $("#vdcTsL").hide();
+            $("#aL1").hide();
+            $("#bL1").hide();
+            $("#vdcTsL").show()
+        }
+    })
+    
+    </script>
 </body>
 </html>

@@ -2,8 +2,8 @@ function createFila( nItensFila ){
     let FILA = [];
     for (i=0;i<nItensFila;i++){
         let ItemFila = new Object();
-        ItemFila.horaChegada = i //horaChegada();
-        ItemFila.tempoServico = 2*i + 1 //tempoServico();
+        ItemFila.horaChegada = horaChegada( i );
+        ItemFila.tempoServico =  tempoServico( i );
         ItemFila.tempoEsperaFila = 0;
         ItemFila.tempoOcioso = 0;
         FILA.push(ItemFila);
@@ -11,15 +11,50 @@ function createFila( nItensFila ){
     return FILA.sort((a, b) => a.horaChegada - b.horaChegada)
 }
 
-function horaChegada(  ){
-    // TODO: Sortear os tempos, utilizar a entrada do usuário para as distribuições
-    // TODO: Desativar os campos quando iniciada a simulação
+function horaChegada( i ){
+    switch ( $("#dTec").val() ){
+        case 'U':
+            let a = parseInt($("#a").val())
+            let b = parseInt( $("#b").val() )
+            return ( a + (b - a) * geraVrAleatorio() )
+
+        case 'C':
+            return (i+1) * parseInt($("#vdcTec").val())
+
+        case 'E':
+            let lambda = parseInt( $("#vdcTec").val() )
+            return ( -1 / lambda ) * ( Math.log( 1 - geraVrAleatorio() ) )
+
+        default:
+            alert("Erro!!");
+            throw message;
+    }
     return 1;
 }
 
-function tempoServico(){
-    // TODO: Sortear os tempos, utilizar a entrada do usuário para as distribuições
-    return 1;
+function tempoServico( i ){
+    
+    switch ( $("#dTs").val() ){
+        case 'U':
+            let a = parseInt( $("#a1").val() )
+            let b = parseInt( $("#b1").val() )
+            return ( a + (b - a) * geraVrAleatorio() )
+        
+        case 'C':
+            return (i+1) * parseInt($("#vdcTs").val())
+
+        case 'E':
+            let lambda = parseInt( $("#vdcTs").val() )
+            return ( -1 / lambda ) * ( Math.log( 1 - geraVrAleatorio() ) )
+
+        default:
+            alert("Erro!!");
+            throw message;
+    }
+}
+
+function geraVrAleatorio(){
+    return 2;
 }
 
 function criaServidor(){
@@ -102,44 +137,4 @@ function comecar() {
     tempo = (S1.momentoFicaLivre >= S2.momentoFicaLivre) ?  S1.momentoFicaLivre : S2.momentoFicaLivre
 
 }
-
-// function geraSaidaUniforme() {
-//     xNSaida = (xNSaida * aSaida) % mSaida;
-//     return xNSaida / mSaida;
-// }
-// function geraSaidaConstante() {
-//     let saida = $("#constante-saida").val() ;
-//     if(saida){
-//         return saida;
-//     }
-//     return  3;
-// }
-// function geraSaidaExponencial() {
-//     let U = geraSaidaUniforme();
-//     return (-1 / LAMBDA) * log(1 - U);
-// }
-
-// function geraHoraSaida() {
-//     let distribuicaoSaida = $("input[name='tipoSaida']:checked").val();
-//     let tempoEntreSaida;
-//     aSaida = $("#a-saida").val() | ADEFAULT;
-//     mSaida = $("#m-saida").val() | MDEFAULT;
-//     switch (distribuicaoSaida) {
-//         case 'uniforme':
-//             tempoEntreSaida = geraSaidaUniforme();
-//             break;
-//         case 'constante':
-//             tempoEntreSaida = geraSaidaConstante();
-//             break;
-//         case 'exponencial':
-//             tempoEntreSaida = geraSaidaExponencial();
-//             break;
-//         default:
-//             let message = "distribuição de saida não definido";
-//             alert(message);
-//             throw message;
-//     }
-//     tempoTotalServico += tempoEntreSaida * MULTIPLICADORTEMPO;
-//     return tempoEntreSaida * MULTIPLICADORTEMPO;
-// }
 
