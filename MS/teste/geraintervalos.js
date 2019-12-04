@@ -98,6 +98,17 @@ function addOnTable( cliente, horaChegada, tempoFila, tempoServico, tempoSistema
     cell5.innerHTML = tempoSistema;
 }
 
+function addOnModal( propriedade, valor ){
+    var tabela = document.getElementById("tabela-modal")
+    var row = tabela.insertRow(-1);
+    
+    var cell1 = row.insertCell(0);
+    cell1.innerHTML = propriedade;
+    
+    var cell2 = row.insertCell(1);
+    cell2.innerHTML = valor;
+}
+
 function comecar() {
     $("#formulario :input").attr("disabled", true)
     tabela.hidden=false
@@ -114,24 +125,33 @@ function comecar() {
     let tempoTotalEsperaFila = 0
     let clientesEsperaram = 0
     let tempoTotalSimulacao = 0
-    let tempoMedioSistema = 0
+    let tempoTotalServico = 0
+    let tempoTotalSistema = 0
     let tempo = 0
     let i = 1;
 
     while ( fila.length !== 0 ){
         if ( S1.momentoFicaLivre <= S2.momentoFicaLivre ){
-                // Servidor 1 termina primeiro
-                S1.itemFila = fila.shift()
-                S1.itemFila.tempoEsperaFila = tempo - S1.itemFila.horaChegada  > 0 ? tempo - S1.itemFila.horaChegada : 0
-                S1.momentoFicaLivre = tempo + S1.itemFila.tempoServico
-                addOnTable( i + " - S1", S1.itemFila.horaChegada, S1.itemFila.tempoEsperaFila, S1.itemFila.tempoServico, tempo )
-                i += 1
+            // Servidor 1 termina primeiro
+            S1.itemFila = fila.shift()
+            S1.itemFila.tempoEsperaFila = tempo - S1.itemFila.horaChegada  > 0 ? tempo - S1.itemFila.horaChegada : 0
+            S1.momentoFicaLivre = tempo + S1.itemFila.tempoServico
+            tempoTotalEsperaFila += S1.itemFila.tempoEsperaFila
+            if ( S1.itemFila.tempoEsperaFila > 0 ) clientesEsperaram++
+            tempoTotalServico += S1.itemFila.tempoServico
+            tempoTotalSistema += S1.itemFila.tempoServico + S1.itemFila.tempoEsperaFila
+            addOnTable( i + " - S1", S1.itemFila.horaChegada, S1.itemFila.tempoEsperaFila, S1.itemFila.tempoServico, S1.itemFila.tempoServico + S1.itemFila.tempoEsperaFila)
+            i += 1
         } else {
             // Servidor 2 termina primeiro
             S2.itemFila = fila.shift()
             S2.itemFila.tempoEsperaFila = tempo - S2.itemFila.horaChegada  > 0 ? tempo - S2.itemFila.horaChegada : 0
             S2.momentoFicaLivre = tempo + S2.itemFila.tempoServico
-            addOnTable( i + " - S2", S2.itemFila.horaChegada, S2.itemFila.tempoEsperaFila, S2.itemFila.tempoServico, tempo )
+            tempoTotalEsperaFila += S2.itemFila.tempoEsperaFila
+            if ( S2.itemFila.tempoEsperaFila > 0 ) clientesEsperaram++
+            tempoTotalServico += S2.itemFila.tempoServico
+            tempoTotalSistema += S2.itemFila.tempoServico + S2.itemFila.tempoEsperaFila
+            addOnTable( i + " - S2", S2.itemFila.horaChegada, S2.itemFila.tempoEsperaFila, S2.itemFila.tempoServico, S2.itemFila.tempoServico + S2.itemFila.tempoEsperaFila )
             i += 1        
         }
         tempo = (S1.momentoFicaLivre <= S2.momentoFicaLivre) ?  S1.momentoFicaLivre : S2.momentoFicaLivre
@@ -143,6 +163,11 @@ function comecar() {
             this.clientesEsperaram++;
     }
     tempo = (S1.momentoFicaLivre >= S2.momentoFicaLivre) ?  S1.momentoFicaLivre : S2.momentoFicaLivre
-
+    tempoTotalSimulacao = tempo
+    addOnModal("Tempo total da simulação",tempoTotalSimulacao)
+    addOnModal("Tempo médio de espera na fila",tempoTotalEsperaFila/nItensFila)
+    addOnModal("Tempo médio de serviço",tempoTotalServico/nItensFila)
+    addOnModal("Tempo médio no sistema",tempoTotalSistema/nItensFila)
+    addOnModal("Clientes que esperam",clientesEsperaram)
 }
 
