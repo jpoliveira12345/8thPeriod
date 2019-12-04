@@ -1,3 +1,8 @@
+var nAleatorios = []
+var SEED = 7
+var MODULO = 32165 
+var MULTIPLICADOR = 16807
+
 function createFila( nItensFila ){
     let FILA = [];
     for (i=0;i<nItensFila;i++){
@@ -16,20 +21,19 @@ function horaChegada( i ){
         case 'U':
             let a = parseInt($("#a").val())
             let b = parseInt( $("#b").val() )
-            return ( a + (b - a) * geraVrAleatorio() )
+            return Math.abs(parseInt( a + (b - a) * nAleatorios[i] ))
 
         case 'C':
-            return (i+1) * parseInt($("#vdcTec").val())
+            return Math.abs(parseInt((i+1) * parseInt($("#vdcTec").val())))
 
         case 'E':
             let lambda = parseInt( $("#vdcTec").val() )
-            return ( -1 / lambda ) * ( Math.log( 1 - geraVrAleatorio() ) )
+            return MULTIPLICADOR * (1 + Math.abs(parseInt(( -1 / lambda ) * ( Math.log( 1 - (nAleatorios[i] / MODULO) ) ))))
 
         default:
             alert("Erro!!");
             throw message;
     }
-    return 1;
 }
 
 function tempoServico( i ){
@@ -38,14 +42,14 @@ function tempoServico( i ){
         case 'U':
             let a = parseInt( $("#a1").val() )
             let b = parseInt( $("#b1").val() )
-            return ( a + (b - a) * geraVrAleatorio() )
+            return  1 + Math.abs(parseInt( a + (b - a) * nAleatorios[i] ))
         
         case 'C':
-            return (i+1) * parseInt($("#vdcTs").val())
+            return Math.abs(parseInt((i+1) * parseInt($("#vdcTs").val())))
 
         case 'E':
             let lambda = parseInt( $("#vdcTs").val() )
-            return ( -1 / lambda ) * ( Math.log( 1 - geraVrAleatorio() ) )
+            return MULTIPLICADOR * (1 + Math.abs(parseInt( -1 / lambda ) * ( Math.log( 1 - (nAleatorios[i] / MODULO) ) )))
 
         default:
             alert("Erro!!");
@@ -53,8 +57,13 @@ function tempoServico( i ){
     }
 }
 
-function geraVrAleatorio(){
-    return 2;
+function geraVrAleatorios( n ){
+    for ( i = 0; i < n ; i++){
+        if ( i == 0 )
+            nAleatorios[i] =  parseFloat(SEED)
+        else
+            nAleatorios[i] =  Math.abs((MULTIPLICADOR * nAleatorios[ i-1 ])  % MODULO)
+    }
 }
 
 function criaServidor(){
@@ -89,19 +98,16 @@ function addOnTable( cliente, horaChegada, tempoFila, tempoServico, tempoSistema
     cell5.innerHTML = tempoSistema;
 }
 
-function verResultados(){
-    alert("Criar modal com resultados")
-}
-
 function comecar() {
     $("#formulario :input").attr("disabled", true)
     tabela.hidden=false
     $('#botao').html('Resultados')
     $('#botao').addClass('btn-primary')
     $('#botao').addClass('btn-success')
-    $("#bfCaptchaEntry").click(verResultados())
-
+    $('#botao').attr('data-toggle', 'modal');
+    $('#botao').attr('data-target', '#modalCart');
     const nItensFila = parseInt($('#nClientes').val())
+    geraVrAleatorios(nItensFila)
     let fila = createFila(nItensFila)
     let S1 = criaServidor()
     let S2 = criaServidor()
@@ -128,10 +134,12 @@ function comecar() {
             addOnTable( i + " - S2", S2.itemFila.horaChegada, S2.itemFila.tempoEsperaFila, S2.itemFila.tempoServico, tempo )
             i += 1        
         }
-        fila[0].tempoOcioso = tempo;
         tempo = (S1.momentoFicaLivre <= S2.momentoFicaLivre) ?  S1.momentoFicaLivre : S2.momentoFicaLivre
-        fila[0].tempoOcioso = tempo - fila[0].tempoOcioso
-        if ( fila[0] > 0 )
+        if ( fila[0] != undefined ){
+            fila[0].tempoOcioso = tempo;
+            fila[0].tempoOcioso = tempo - fila[0].tempoOcioso
+        }
+        if ( fila[0] != undefined && fila[0].tempoOcioso > 0 )
             this.clientesEsperaram++;
     }
     tempo = (S1.momentoFicaLivre >= S2.momentoFicaLivre) ?  S1.momentoFicaLivre : S2.momentoFicaLivre

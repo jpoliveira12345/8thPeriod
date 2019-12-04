@@ -20,7 +20,7 @@
                 <div class="col-sm">
                     <fieldset class="border p-2">
                         <legend  class="w-auto">Tempo entre chegadas (TEC)</legend>
-                        <div class="form-row">
+                        <!-- <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="clTec">Congruente Linear</label>
                                 <input type="number" class="form-control" id="clTec" placeholder="Congruente Linear" value="10" required>
@@ -29,7 +29,7 @@
                                 <label for="mTec">Módulo</label>
                                 <input type="number" class="form-control" id="mTec" placeholder="Módulo" value="5" required>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-row">
                             <div class="form-group col-md-3">
                                 <label for="dTec">Distribuição</label>
@@ -41,15 +41,15 @@
                             </div>
                             <div id="vdcTecL" class="form-group col-md-3">
                                 <label id="vdcTecLabel" for="vdcTec">Lambda</label>
-                                <input type="number" class="form-control" id="vdcTec" value="50" >
+                                <input type="number" class="form-control" id="vdcTec" value="37" >
                             </div>
                             <div id="aL" class="form-group col-md-3">
                                     <label for="a">a</label>
-                                    <input type="number" class="form-control" id="a" value="50" >
+                                    <input type="number" class="form-control" id="a" value="197" >
                             </div>
                             <div id="bL" class="form-group col-md-3">
                                 <label for="b">b</label>
-                                <input type="number" class="form-control" id="b" value="50" >
+                                <input type="number" class="form-control" id="b" value="2324" >
                             </div>    
                         </div>
                     </fieldset>
@@ -57,7 +57,7 @@
                     <div class="col-sm">
                         <fieldset class="border p-2">
                             <legend  class="w-auto">Tempo de serviço (TS)</legend>
-                            <div class="form-row">
+                            <!-- <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="inputEmail4">Congruente Linear</label>
                                     <input type="number" class="form-control" id="clTs" placeholder="Congruente Linear"  value="14" required>
@@ -66,7 +66,7 @@
                                     <label for="mTs">Módulo</label>
                                     <input type="number" class="form-control" id="mTs" placeholder="Módulo"  value="2" required>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="form-row">
                                 <div class="form-group col-md-3">
                                     <label for="dTs">Distribuição</label>
@@ -82,11 +82,11 @@
                                 </div>
                                 <div id="aL1" class="form-group col-md-3">
                                         <label for="a1">a</label>
-                                        <input type="number" class="form-control" id="a1" value="50" >
+                                        <input type="number" class="form-control" id="a1" value="487" >
                                 </div>
                                 <div id="bL1" class="form-group col-md-3">
                                     <label for="b1">b</label>
-                                    <input type="number" class="form-control" id="b1" value="50" >
+                                    <input type="number" class="form-control" id="b1" value="12" >
                                 </div> 
                             </div>
                         </fieldset>
@@ -114,6 +114,50 @@
             <tbody></tbody>
         </table>
     </div>
+
+    <!-- Button trigger modal-->
+    <button type="button" class="btn btn-primary" >Launch modal</button>
+
+    <!-- Modal: modalCart -->
+    <div class="modal fade" id="modalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Estatísticas</h4>
+            </div>
+            <!--Body-->
+            <div class="modal-body">
+
+                <table class="table table-hover">
+                <thead>
+                    <tr>
+                    <th>Propriedade</th>
+                    <th>Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Product 1</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Product 2</td>
+                    </tr>
+                </tbody>
+                </table>
+
+            </div>
+            <!--Footer-->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Fechar</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal: modalCart -->
     <script>
     $("#vdcTecL").hide();
     $("#vdcTsL").hide();
