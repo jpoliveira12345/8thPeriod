@@ -43,17 +43,17 @@ function horaChegada(i) {
 
 function tempoServico(i) {
 
-    switch ($("#dTec").val()) {
+    switch ($("#dTs").val()) {
         case 'U':
-            let a = parseInt($("#a").val())
-            let b = parseInt($("#b").val())
+            let a = parseInt($("#a1").val())
+            let b = parseInt($("#b1").val())
             return Math.abs(parseInt(a + (b - a) * nAleatorios[i] / MODULO))
 
         case 'C':
-            return Math.abs(parseInt($("#vdcTec").val()))
+            return Math.abs(parseInt($("#vdcTs").val()))
 
         case 'E':
-            let lambda = parseInt($("#vdcTec").val())
+            let lambda = parseInt($("#vdcTs").val())
             return (-1 / lambda) * Math.log(1 - nAleatorios[i] / MODULO)
 
         default:
