@@ -1,7 +1,7 @@
 var nAleatorios = []
 var SEED = 7
-var MODULO = 32165 
-var MULTIPLICADOR = 16807
+var MULTIPLICADOR = new Big('16807') 
+var MODULO = new Big('2147483647') 
 
 function createFila( nItensFila ){
     let FILA = [];

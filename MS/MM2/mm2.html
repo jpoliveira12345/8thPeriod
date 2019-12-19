@@ -9,6 +9,7 @@
         <script src="assets/jQuery/jquery-1.12.4.min.js"></script>
         <script src="assets/PopperJS/popper.min.js"></script>
         <script src="assets/BootstrapMin/bootstrap.min.js"></script>
+        <script src="assets/big.js"></script>
         <script src="./geraintervalos.js"></script>
     </head>
     <body class="container-fluid">
@@ -77,7 +78,7 @@
                                     </select>
                                 </div>
                                 <div id="vdcTsL" class="form-group col-md-3">
-                                    <label id="vdcTsLabel" for="vdcTs">Lambda</label>
+                                    <label id="vdcTsLabel" for="vdcTs">Mi</label>
                                     <input type="number" class="form-control" id="vdcTs" value="9" >
                                 </div>
                                 <div id="aL1" class="form-group col-md-3">
@@ -187,7 +188,7 @@
             $("#bL1").hide();
             $("#vdcTsL").show();
         }else if ( $('#dTs').val()=='U' ) {
-            $("#vdcTsLabel").text("Lambda");
+            $("#vdcTsLabel").text("Mi");
             $("#vdcTsL").removeClass("col-md-9");
             $("#vdcTsL").addClass("col-md-3");
             $("#aL1").show();
@@ -195,7 +196,7 @@
             $("#vdcTsL").hide();
             
         }else if ( $('#dTs').val()=='E' ) {
-            $("#vdcTsLabel").text("Lambda");
+            $("#vdcTsLabel").text("Mi");
             $("#vdcTsL").removeClass("col-md-3");
             $("#vdcTsL").addClass("col-md-9");
             $("#vdcTsL").hide();
