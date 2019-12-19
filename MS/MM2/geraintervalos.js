@@ -1,5 +1,5 @@
 var nAleatorios = []
-var MODULO = 32165
+var MODULO = 2147483647;
 var MULTIPLICADOR = 16807
 var quantidadeServidores = 2
 
