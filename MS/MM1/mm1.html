@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>MM1</title>
+        <link rel="stylesheet" href="assets/Bootstrap/bootstrap.min.css">
+        <script src="assets/jQuery/jquery-1.12.4.min.js"></script>
+        <script src="assets/PopperJS/popper.min.js"></script>
+        <script src="assets/BootstrapMin/bootstrap.min.js"></script>
+        <script src="assets/big.js"></script>
+        <script src="assets/sim-0.26.js"></script>
+        <script src="./geraintervalos.js"></script>
+    </head>
+    <body class="container-fluid">
+        <p class="text-center h1 mb-4">Simulação com MM1</p>
+        <p class="text-right h6 mb-4">Gustavo de Faria e João Paulo</p>
+        <form id="formulario" action="#!">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm">
+                    <fieldset class="border p-2">
+                        <legend  class="w-auto">Tempo entre chegadas (TEC)</legend>
+                        <!-- <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="clTec">Congruente Linear</label>
+                                <input type="number" class="form-control" id="clTec" placeholder="Congruente Linear" value="10" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="mTec">Módulo</label>
+                                <input type="number" class="form-control" id="mTec" placeholder="Módulo" value="5" required>
+                            </div>
+                        </div> -->
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="dTec">Distribuição</label>
+                                <select id="dTec" class="form-control">
+                                    <option value="U"selected>Uniforme</option>
+                                    <option value="C">Constante</option>
+                                    <option value="E" >Exponencial</option>
+                                </select>
+                            </div>
+                            <div id="vdcTecL" class="form-group col-md-3">
+                                <label id="vdcTecLabel" for="vdcTec">Lambda</label>
+                                <input type="number" class="form-control" id="vdcTec" value="37" >
+                            </div>
+                            <div id="aL" class="form-group col-md-3">
+                                    <label for="a">a</label>
+                                    <input type="number" class="form-control" id="a" value="197" >
+                            </div>
+                            <div id="bL" class="form-group col-md-3">
+                                <label for="b">b</label>
+                                <input type="number" class="form-control" id="b" value="2324" >
+                            </div>    
+                        </div>
+                    </fieldset>
+                </div>
+                    <div class="col-sm">
+                        <fieldset class="border p-2">
+                            <legend  class="w-auto">Tempo de serviço (TS)</legend>
+                            <!-- <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputEmail4">Congruente Linear</label>
+                                    <input type="number" class="form-control" id="clTs" placeholder="Congruente Linear"  value="14" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="mTs">Módulo</label>
+                                    <input type="number" class="form-control" id="mTs" placeholder="Módulo"  value="2" required>
+                                </div>
+                            </div> -->
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="dTs">Distribuição</label>
+                                    <select id="dTs" class="form-control">
+                                        <option value="U" selected>Uniforme</option>
+                                        <option value="C">Constante</option>
+                                        <option value="E" >Exponencial</option>
+                                    </select>
+                                </div>
+                                <div id="vdcTsL" class="form-group col-md-3">
+                                    <label id="vdcTsLabel" for="vdcTs">Mi</label>
+                                    <input type="number" class="form-control" id="vdcTs" value="9" >
+                                </div>
+                                <div id="aL1" class="form-group col-md-3">
+                                        <label for="a1">a</label>
+                                        <input type="number" class="form-control" id="a1" value="487" >
+                                </div>
+                                <div id="bL1" class="form-group col-md-3">
+                                    <label for="b1">b</label>
+                                    <input type="number" class="form-control" id="b1" value="12" >
+                                </div> 
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  for="nClientes">N° de clientes</label>
+                    <input type="text" class="form-control" id="nClientes" placeholder="150" value="100" required>
+                </div>
+            </form>
+        </div>
+        <button class="btn btn-primary btn-lg btn-block" type="button" id="botao" onclick="comecar()">INICIAR SIMULAÇÃO</button>
+                    
+       
+        <table class="table" id="tabela" hidden>
+            <thead>
+              <tr>
+                <th scope="col">Cliente</th>
+                <th scope="col">Horário de chegada</th>
+                <th scope="col">Tempo na fila</th>
+                <th scope="col">Tempo de serviço</th>
+                <th scope="col">Tempo no sistema</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <!-- Modal: modalCart -->
+    <div class="modal fade" id="modalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Estatísticas</h4>
+            </div>
+            <!--Body-->
+            <div class="modal-body">
+
+                <table class="table table-hover" id="tabela-modal" >
+                <thead>
+                    <tr>
+                    <th>Propriedade</th>
+                    <th>Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   
+                </tbody>
+                </table>
+
+            </div>
+            <!--Footer-->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Fechar</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal: modalCart -->
+    <script>
+    $("#vdcTecL").hide();
+    $("#vdcTsL").hide();
+    $("#dTec").change(function () {
+        if ( $('#dTec').val()=='C' ) {
+            $("#vdcTecL").removeClass("col-md-3");
+            $("#vdcTecL").addClass("col-md-9");
+            $("#vdcTecLabel").text("Constante");
+            $("#aL").hide();
+            $("#bL").hide();
+            $("#vdcTecL").show();
+            
+        }else if ( $('#dTec').val()=='U' ) {
+            $("#vdcTecLabel").text("Lambda");
+            $("#vdcTecL").removeClass("col-md-9");
+            $("#vdcTecL").addClass("col-md-3");
+            $("#aL").show();
+            $("#bL").show();
+            $("#vdcTecL").hide();
+            
+        }else if ( $('#dTec').val()=='E' ) {
+            $("#vdcTecL").show();
+            $("#vdcTecLabel").text("Lambda");
+            $("#vdcTecL").removeClass("col-md-3");
+            $("#vdcTecL").addClass("col-md-9");
+            $("#aL").hide();
+            $("#bL").hide();
+        }
+    })
+    
+    $("#dTs").change(function () {
+        if ( $('#dTs').val() =='C' ) {
+            $("#vdcTsL").removeClass("col-md-3");
+            $("#vdcTsL").addClass("col-md-9");
+            $("#vdcTsLabel").text("Constante");
+            $("#aL1").hide();
+            $("#bL1").hide();
+            $("#vdcTsL").show();
+        }else if ( $('#dTs').val()=='U' ) {
+            $("#vdcTsLabel").text("Mi");
+            $("#vdcTsL").removeClass("col-md-9");
+            $("#vdcTsL").addClass("col-md-3");
+            $("#aL1").show();
+            $("#bL1").show();
+            $("#vdcTsL").hide();
+            
+        }else if ( $('#dTs').val()=='E' ) {
+            $("#vdcTsLabel").text("Mi");
+            $("#vdcTsL").removeClass("col-md-3");
+            $("#vdcTsL").addClass("col-md-9");
+            $("#vdcTsL").hide();
+            $("#aL1").hide();
+            $("#bL1").hide();
+            $("#vdcTsL").show()
+        }
+    })
+    
+    </script>
+</body>
+</html>
